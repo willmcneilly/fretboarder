@@ -1,6 +1,8 @@
 # fretboarder
 
-An svg chord diagram generator
+Generate SVG chord diagrams
+
+A work in progress. Not even close to finished.
 
 ## About
 
