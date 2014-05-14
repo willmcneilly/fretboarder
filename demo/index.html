@@ -14,22 +14,24 @@
     <h1>fretboarder demo</h1>
 
     <!-- begin demo markup -->
-
+    <div id="a-chord"></div>
     <!-- end demo markup -->
 
     <p>See the <a href="http://willmcneilly.github.io/fretboarder">project homepage</a>.
     <p>Check out the <a href="https://github.com/willmcneilly/fretboarder">project repo</a>.
     <p>Copyright 2014 Will McNeilly</p>
 
+    <script src="./../bower_components/svg.js/dist/svg.min.js"></script>
     <script src="./../dist/fretboarder.js"></script>
 
     <script>
       /* begin demo script */
-
-      var aChord = new fretboarder('x,0,2,2,2,0');
-      var dChord = new fretboarder('0,0,0,2,3,2');
+      var aChord = new fretboarder('x,0,2,2,2,0',undefined,SVG);
+      var dChord = new fretboarder('0,0,0,2,3,2',undefined,SVG);
       console.log(aChord.chordNotation);
       console.log(dChord.chordNotation);
+
+      aChord.renderTo(document.getElementById("a-chord"));
 
       /* end demo script */
     </script>

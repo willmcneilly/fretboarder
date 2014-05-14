@@ -6,16 +6,17 @@
 /* fretboarder main */
 
 // Base function.
-var fretboarder = function(chordNotation, options) {
+var fretboarder = function(chordNotation, options, SVG) {
   // Add functionality here.
   var defaultOptions = {
-    width: 50,
+    width: "100px",
   };
 
-  var mergedOptions = null;
-
-  var _chordNotation = chordNotation;
-  var _notationArray = null;
+  var mergedOptions = null,
+      _chordNotation = chordNotation,
+      _notationArray = null,
+      _canvasDOMNode = null,
+      _canvas = null;
 
   var _init = function() {
     if(!_chordNotation) {
@@ -56,21 +57,36 @@ var fretboarder = function(chordNotation, options) {
       }
       return position;
     });
+  };
 
+  var _initiateCanvas = function() {
+    _canvasDOMNode = root.document.createElement("div");
+    _canvasDOMNode.style.width = defaultOptions.width;
+    _canvasDOMNode.style.height = defaultOptions.width;
+    _canvas = SVG(_canvasDOMNode);
   };
 
   var _renderDiagram = function() {
     _notationArray = _splitChordNotation();
     _validateChord();
+    _initiateCanvas();
     console.log(_notationArray);
   };
+
+  var _renderTo = function(DOMNode) {
+    DOMNode.appendChild(_canvasDOMNode);
+  };
+
 
 
   _init();
 
   return {
     chordNotation: _chordNotation,
-    options: options
+    options: options,
+    renderTo: function(DOMNode) {
+      _renderTo(DOMNode);
+    }
 
   };
 };
