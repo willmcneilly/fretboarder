@@ -10,5 +10,6 @@
     "unused": false,
     "strict": true,
     "trailing": true,
-    "smarttabs": true
+    "smarttabs": true,
+    "debug": true
 }
