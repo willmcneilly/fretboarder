@@ -4,7 +4,7 @@
   stroke-width: px;
 }
 
-.fretboarder-fretwire {
+.fretboarder-fretwire, .fretboarder-string {
   stroke: black;
   stroke-width: 1px;
 }

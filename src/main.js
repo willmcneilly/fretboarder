@@ -65,7 +65,9 @@ var fretboarder = function(chordNotation, options, SVG) {
   };
 
   var _drawFretboard = function() {
-    _diagram.fretboard = _canvas.rect(defaultOptions.width, _height).attr('class', 'fretboarder-fingerboard');
+    _diagram.fretboard = _canvas
+      .rect(defaultOptions.width, _height)
+      .attr('class', 'fretboarder-fingerboard');
   };
 
   var _isInOpenPosition = function() {
@@ -91,6 +93,21 @@ var fretboarder = function(chordNotation, options, SVG) {
     }
   };
 
+  var _calculateStringPosition = function() {
+    var stringSpacing = defaultOptions.width / 5;
+    var positionX = 0;
+    for(var i = 0; i < 6; i++) {
+      _drawString(positionX);
+      positionX += stringSpacing;
+    }
+  };
+
+  var _drawString = function(positionX) {
+    _canvas
+      .line(positionX, 0, positionX, _height)
+      .attr('class', 'fretboarder-string');
+  };
+
   var _drawFretwire = function(positionY) {
     _canvas
       .line(0, positionY, defaultOptions.width, positionY)
@@ -111,6 +128,7 @@ var fretboarder = function(chordNotation, options, SVG) {
     _initiateCanvas();
     _drawFretboard();
     _calculateFretwirePosition();
+    _calculateStringPosition();
     console.log(_isInOpenPosition());
   };
 
