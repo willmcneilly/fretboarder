@@ -17,6 +17,8 @@ var fretboarder = function(chordNotation, options, SVG) {
       _canvas = null,
       _height = null,
       _fretHeight = null,
+      _widthBetweenStrings = null,
+      _startingFret = null,
       _diagram = {};
 
 
@@ -72,20 +74,17 @@ var fretboarder = function(chordNotation, options, SVG) {
   };
 
   var _isInOpenPosition = function() {
-    // in open position if greatest number in _notationArray < 5
-    var openPosition = true;
-    _notationArray.forEach(function(note) {
-      if(typeof note === 'number') {
-        if(note > 5) {
-          openPosition = false;
-        }
-      }
-    });
-    return openPosition;
+    if(_startingFret === 1) {
+      return true;
+    }
   };
 
   var _calculateFretHeight = function() {
     _fretHeight = _height / NUM_FRETS;
+  };
+
+  var _calculateWidthBetweenStrings = function() {
+    _widthBetweenStrings = defaultOptions.width / 5;
   };
 
   var _calculateFretwirePosition = function() {
@@ -99,7 +98,7 @@ var fretboarder = function(chordNotation, options, SVG) {
   };
 
   var _calculateStringPosition = function() {
-    var stringSpacing = defaultOptions.width / 5;
+    var stringSpacing = _widthBetweenStrings;
     var positionX = 0;
     for(var i = 0; i < 6; i++) {
       _drawString(positionX);
@@ -107,8 +106,62 @@ var fretboarder = function(chordNotation, options, SVG) {
     }
   };
 
+  var _findStartingFret = function() {
+    // We're looking for the lowest fret number here
+    // should be noted that just because the notation contains
+    // an open string, doesn't mean we're in open position.
+    var openPosition = true;
+    var lowestNumberNotZero = null;
+    _notationArray.forEach(function(note) {
+      if(typeof note === 'number') {
+        if(note > 5) {
+          openPosition = false;
+        }
+        if(lowestNumberNotZero === null) {
+          lowestNumberNotZero = note;
+        }
+        if(note < lowestNumberNotZero && note > 0) {
+          lowestNumberNotZero = null;
+        }
+      }
+    });
+
+    if(openPosition) {
+      _startingFret = 1;
+    }
+    else {
+      _startingFret = lowestNumberNotZero;
+    }
+
+  };
+
   var _calculateFingerPosition = function() {
-    _canvas.circle(10);
+    _notationArray.forEach(function(note, index){
+      var relativeFingerPosition,
+          xPosition,
+          yPosition;
+
+      if(note === 'x' || note === 0) {
+
+      }
+      else {
+        console.log(note);
+        console.log(_startingFret);
+        console.log('--------');
+        relativeFingerPosition = note - _startingFret;
+        xPosition = index * _widthBetweenStrings;
+        yPosition = relativeFingerPosition * _fretHeight;
+        _drawFingerPosition(xPosition, yPosition);
+
+      }
+
+    });
+  };
+
+  var _drawFingerPosition = function(x,y) {
+    _canvas
+      .circle(_fretHeight)
+      .translate(x - _fretHeight/2, y);
   };
 
   var _drawString = function(positionX) {
@@ -140,10 +193,12 @@ var fretboarder = function(chordNotation, options, SVG) {
 
   var _renderDiagram = function() {
     _notationArray = _splitChordNotation();
-    _calculateHeight();
     _validateChord();
+    _calculateHeight();
+    _findStartingFret();
     _initiateCanvas();
     _drawFretboard();
+    _calculateWidthBetweenStrings();
     _calculateFretHeight();
     _calculateFretwirePosition();
     _calculateStringPosition();
