@@ -2,16 +2,21 @@
 
 // Base function.
 var fretboarder = function(chordNotation, options, SVG) {
-  // Add functionality here.
+
+  var HEIGHT_PERCENTAGE = 25;
+
   var defaultOptions = {
-    width: "100px",
+    width: 100,
   };
 
   var mergedOptions = null,
       _chordNotation = chordNotation,
       _notationArray = null,
       _canvasDOMNode = null,
-      _canvas = null;
+      _canvas = null,
+      _height = null,
+      _diagram = {};
+
 
   var _init = function() {
     if(!_chordNotation) {
@@ -54,17 +59,27 @@ var fretboarder = function(chordNotation, options, SVG) {
     });
   };
 
+  var _calculateHeight = function() {
+    _height = (HEIGHT_PERCENTAGE/100 * defaultOptions.width) + defaultOptions.width;
+  };
+
+  var _drawFretboard = function() {
+    _diagram.fretboard = _canvas.rect(defaultOptions.width, _height).attr('class', 'fretboarder-fingerboard');
+  };
+
   var _initiateCanvas = function() {
     _canvasDOMNode = root.document.createElement("div");
-    _canvasDOMNode.style.width = defaultOptions.width;
-    _canvasDOMNode.style.height = defaultOptions.width;
+    _canvasDOMNode.style.width = defaultOptions.width + "px";
+    _canvasDOMNode.style.height = _height + "px";
     _canvas = SVG(_canvasDOMNode);
   };
 
   var _renderDiagram = function() {
     _notationArray = _splitChordNotation();
+    _calculateHeight();
     _validateChord();
     _initiateCanvas();
+    _drawFretboard();
     console.log(_notationArray);
   };
 
