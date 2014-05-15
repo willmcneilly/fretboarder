@@ -6,6 +6,7 @@ var fretboarder = function(chordNotation, options, SVG) {
   var HEIGHT_PERCENTAGE = 15,
       // The percentage of finger position compared to fretheight
       FINGER_SIZE_PERCENTAGE = 80,
+      MARGIN_PERCENTAGE = 20,
       NUM_FRETS = 5;
 
   var defaultOptions = {
@@ -18,6 +19,8 @@ var fretboarder = function(chordNotation, options, SVG) {
       _canvasDOMNode = null,
       _canvas = null,
       _height = null,
+      _width = null,
+      _margin = null,
       _fretHeight = null,
       _widthBetweenStrings = null,
       _startingFret = null,
@@ -65,13 +68,23 @@ var fretboarder = function(chordNotation, options, SVG) {
     });
   };
 
+  var _calculateMargin = function() {
+    _margin = defaultOptions.width/100 * MARGIN_PERCENTAGE;
+  };
+
+
   var _calculateHeight = function() {
-    _height = (HEIGHT_PERCENTAGE/100 * defaultOptions.width) + defaultOptions.width;
+    _height = (HEIGHT_PERCENTAGE/100 * _width) + _width;
+  };
+
+  var _calculateWidth = function() {
+    _width = defaultOptions.width - _margin * 2;
   };
 
   var _drawFretboard = function() {
     _diagram.fretboard = _canvas
-      .rect(defaultOptions.width, _height)
+      .rect(_width, _height)
+      .translate(_margin, _margin)
       .attr('class', 'fretboarder-fingerboard');
   };
 
@@ -86,7 +99,7 @@ var fretboarder = function(chordNotation, options, SVG) {
   };
 
   var _calculateWidthBetweenStrings = function() {
-    _widthBetweenStrings = defaultOptions.width / 5;
+    _widthBetweenStrings = _width / 5;
   };
 
   var _calculateFretwirePosition = function() {
@@ -162,26 +175,26 @@ var fretboarder = function(chordNotation, options, SVG) {
 
     _canvas
       .circle(fingerSize)
-      .translate(x - fingerSize/2, y + (_fretHeight/2 - fingerSize/2))
+      .translate((x - fingerSize/2) + _margin, (y + (_fretHeight/2 - fingerSize/2)) + _margin)
       .attr('class', 'fretboarder-finger-position');
   };
 
   var _drawString = function(positionX) {
     _canvas
-      .line(positionX, 0, positionX, _height)
+      .line(positionX + _margin, 0 + _margin, positionX + _margin, _height + _margin)
       .attr('class', 'fretboarder-string');
   };
 
   var _drawFretwire = function(positionY) {
     _canvas
-      .line(0, positionY, defaultOptions.width, positionY)
+      .line(0 + _margin, positionY + _margin, _width + _margin, positionY + _margin)
       .attr('class', 'fretboarder-fretwire');
   };
 
   var _drawNut = function() {
     if(_isInOpenPosition()) {
       _canvas
-        .line(0, 0, defaultOptions.width, 0)
+        .line(0 + _margin, 0 + _margin, _width + _margin, 0 + _margin)
         .attr('class', 'fretboarder-nut');
     }
   };
@@ -189,13 +202,15 @@ var fretboarder = function(chordNotation, options, SVG) {
   var _initiateCanvas = function() {
     _canvasDOMNode = root.document.createElement("div");
     _canvasDOMNode.style.width = defaultOptions.width + "px";
-    _canvasDOMNode.style.height = _height + "px";
+    _canvasDOMNode.style.height = _height + _margin * 2 + "px";
     _canvas = SVG(_canvasDOMNode);
   };
 
   var _renderDiagram = function() {
     _notationArray = _splitChordNotation();
     _validateChord();
+    _calculateMargin();
+    _calculateWidth();
     _calculateHeight();
     _findStartingFret();
     _initiateCanvas();
