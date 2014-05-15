@@ -3,11 +3,12 @@
 // Base function.
 var fretboarder = function(chordNotation, options, SVG) {
       // percentage larger height of fretboard is compared to width
-  var HEIGHT_PERCENTAGE = 15,
+  var HEIGHT_PERCENTAGE = 20,
       // The percentage of finger position compared to fretheight
       FINGER_SIZE_PERCENTAGE = 80,
       MARGIN_PERCENTAGE = 20,
-      NUM_FRETS = 5;
+      NUM_FRETS = 5,
+      FONTSIZE_PERCENTAGE = 12;
 
   var defaultOptions = {
     width: 100,
@@ -21,6 +22,7 @@ var fretboarder = function(chordNotation, options, SVG) {
       _height = null,
       _width = null,
       _margin = null,
+      _fontSize = null,
       _fretHeight = null,
       _widthBetweenStrings = null,
       _startingFret = null,
@@ -81,6 +83,10 @@ var fretboarder = function(chordNotation, options, SVG) {
     _width = defaultOptions.width - _margin * 2;
   };
 
+  var _calculateFontSize = function() {
+    _fontSize = FONTSIZE_PERCENTAGE/100 * defaultOptions.width;
+  };
+
   var _drawFretboard = function() {
     _diagram.fretboard = _canvas
       .rect(_width, _height)
@@ -120,6 +126,7 @@ var fretboarder = function(chordNotation, options, SVG) {
       positionX += stringSpacing;
     }
   };
+
 
   var _findStartingFret = function() {
     // We're looking for the lowest fret number here
@@ -199,6 +206,20 @@ var fretboarder = function(chordNotation, options, SVG) {
     }
   };
 
+  var _drawFretNumber = function() {
+    if(!_isInOpenPosition()) {
+      _canvas
+        .text(_startingFret.toString())
+        .dx(_margin/2)
+        .dy(_margin)
+        .font({
+          family: 'Helvetica',
+          size: _fontSize,
+          anchor: 'middle',
+        });
+    }
+  };
+
   var _initiateCanvas = function() {
     _canvasDOMNode = root.document.createElement("div");
     _canvasDOMNode.style.width = defaultOptions.width + "px";
@@ -212,6 +233,7 @@ var fretboarder = function(chordNotation, options, SVG) {
     _calculateMargin();
     _calculateWidth();
     _calculateHeight();
+    _calculateFontSize();
     _findStartingFret();
     _initiateCanvas();
     _drawFretboard();
@@ -221,6 +243,7 @@ var fretboarder = function(chordNotation, options, SVG) {
     _calculateStringPosition();
     _calculateFingerPosition();
     _drawNut();
+    _drawFretNumber();
   };
 
   var _renderTo = function(DOMNode) {
