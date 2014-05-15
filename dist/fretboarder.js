@@ -9,7 +9,7 @@
 var fretboarder = function(chordNotation, options, SVG) {
 
   var HEIGHT_PERCENTAGE = 25,
-      NUM_FRETs = 5;
+      NUM_FRETS = 5;
 
   var defaultOptions = {
     width: 100,
@@ -21,6 +21,7 @@ var fretboarder = function(chordNotation, options, SVG) {
       _canvasDOMNode = null,
       _canvas = null,
       _height = null,
+      _fretHeight = null,
       _diagram = {};
 
 
@@ -85,13 +86,16 @@ var fretboarder = function(chordNotation, options, SVG) {
         }
       }
     });
-    console.log(openPosition);
     return openPosition;
+  };
+
+  var _calculateFretHeight = function() {
+    _fretHeight = _height / NUM_FRETS;
   };
 
   var _calculateFretwirePosition = function() {
     // position 4 fretwire
-    var fretSpacing = _height / 5;
+    var fretSpacing = _fretHeight;
     var positionY = fretSpacing;
     for(var i = 0; i < 4; i++) {
       _drawFretwire(positionY);
@@ -106,6 +110,10 @@ var fretboarder = function(chordNotation, options, SVG) {
       _drawString(positionX);
       positionX += stringSpacing;
     }
+  };
+
+  var _calculateFingerPosition = function() {
+    _canvas.circle(10);
   };
 
   var _drawString = function(positionX) {
@@ -141,8 +149,10 @@ var fretboarder = function(chordNotation, options, SVG) {
     _validateChord();
     _initiateCanvas();
     _drawFretboard();
+    _calculateFretHeight();
     _calculateFretwirePosition();
     _calculateStringPosition();
+    _calculateFingerPosition();
     _drawNut();
   };
 
