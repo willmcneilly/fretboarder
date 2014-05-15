@@ -1,5 +1,10 @@
 .fretboarder-fingerboard {
   fill: none;
   stroke: black;
-  stroke-width: 2px;
+  stroke-width: px;
+}
+
+.fretboarder-fretwire {
+  stroke: black;
+  stroke-width: 1px;
 }

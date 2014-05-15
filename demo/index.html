@@ -16,7 +16,11 @@
 
 
     <!-- begin demo markup -->
-    <div id="a-chord"></div>
+    <div id="amin-chord"></div>
+    <br/>
+    <div id="d-chord"></div>
+    <br/>
+    <div id="f-sharpe-maj-chord"></div>
     <!-- end demo markup -->
 
     <p>See the <a href="http://willmcneilly.github.io/fretboarder">project homepage</a>.
@@ -28,12 +32,15 @@
 
     <script>
       /* begin demo script */
-      var aMinChord = new fretboarder('5,7,7,6,5,5',undefined,SVG);
+      var aminChord = new fretboarder('5,7,7,6,5,5',undefined,SVG);
       var dChord = new fretboarder('0,0,0,2,3,2',undefined,SVG);
-      console.log(aMinChord.chordNotation);
+      var fSharpeMajorChord = new fretboarder('x,x,4,3,4,4', undefined, SVG);
+      console.log(aminChord.chordNotation);
       console.log(dChord.chordNotation);
 
-      aMinChord.renderTo(document.getElementById("a-chord"));
+      aminChord.renderTo(document.getElementById("amin-chord"));
+      dChord.renderTo(document.getElementById("d-chord"));
+      fSharpeMajorChord.renderTo(document.getElementById("f-sharpe-maj-chord"));
 
       /* end demo script */
     </script>

@@ -82,11 +82,19 @@ var fretboarder = function(chordNotation, options, SVG) {
   };
 
   var _calculateFretwirePosition = function() {
-
+    // position 4 fretwire
+    var fretSpacing = _height / 5;
+    var positionY = fretSpacing;
+    for(var i = 0; i < 4; i++) {
+      _drawFretwire(positionY);
+      positionY += fretSpacing;
+    }
   };
 
-  var _drawFretwire = function() {
-
+  var _drawFretwire = function(positionY) {
+    _canvas
+      .line(0, positionY, defaultOptions.width, positionY)
+      .attr('class', 'fretboarder-fretwire');
   };
 
   var _initiateCanvas = function() {
@@ -102,6 +110,7 @@ var fretboarder = function(chordNotation, options, SVG) {
     _validateChord();
     _initiateCanvas();
     _drawFretboard();
+    _calculateFretwirePosition();
     console.log(_isInOpenPosition());
   };
 
