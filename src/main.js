@@ -2,8 +2,10 @@
 
 // Base function.
 var fretboarder = function(chordNotation, options, SVG) {
-
-  var HEIGHT_PERCENTAGE = 25,
+      // percentage larger height of fretboard is compared to width
+  var HEIGHT_PERCENTAGE = 15,
+      // The percentage of finger position compared to fretheight
+      FINGER_SIZE_PERCENTAGE = 80,
       NUM_FRETS = 5;
 
   var defaultOptions = {
@@ -145,9 +147,6 @@ var fretboarder = function(chordNotation, options, SVG) {
 
       }
       else {
-        console.log(note);
-        console.log(_startingFret);
-        console.log('--------');
         relativeFingerPosition = note - _startingFret;
         xPosition = index * _widthBetweenStrings;
         yPosition = relativeFingerPosition * _fretHeight;
@@ -159,9 +158,12 @@ var fretboarder = function(chordNotation, options, SVG) {
   };
 
   var _drawFingerPosition = function(x,y) {
+    var fingerSize = _fretHeight/100 * FINGER_SIZE_PERCENTAGE;
+
     _canvas
-      .circle(_fretHeight)
-      .translate(x - _fretHeight/2, y);
+      .circle(fingerSize)
+      .translate(x - fingerSize/2, y + (_fretHeight/2 - fingerSize/2))
+      .attr('class', 'fretboarder-finger-position');
   };
 
   var _drawString = function(positionX) {

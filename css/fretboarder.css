@@ -18,3 +18,7 @@
   stroke: black;
   stroke-width: 6px;
 }
+
+.fretboarder-finger-position {
+  fill: #aaa;
+}
