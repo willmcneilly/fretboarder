@@ -80,6 +80,7 @@ var fretboarder = function(chordNotation, options, SVG) {
         }
       }
     });
+    console.log(openPosition);
     return openPosition;
   };
 
@@ -114,6 +115,14 @@ var fretboarder = function(chordNotation, options, SVG) {
       .attr('class', 'fretboarder-fretwire');
   };
 
+  var _drawNut = function() {
+    if(_isInOpenPosition()) {
+      _canvas
+        .line(0, 0, defaultOptions.width, 0)
+        .attr('class', 'fretboarder-nut');
+    }
+  };
+
   var _initiateCanvas = function() {
     _canvasDOMNode = root.document.createElement("div");
     _canvasDOMNode.style.width = defaultOptions.width + "px";
@@ -129,7 +138,7 @@ var fretboarder = function(chordNotation, options, SVG) {
     _drawFretboard();
     _calculateFretwirePosition();
     _calculateStringPosition();
-    console.log(_isInOpenPosition());
+    _drawNut();
   };
 
   var _renderTo = function(DOMNode) {

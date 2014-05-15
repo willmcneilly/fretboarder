@@ -4,7 +4,17 @@
   stroke-width: px;
 }
 
-.fretboarder-fretwire, .fretboarder-string {
+.fretboarder-fretwire {
+  stroke: #666;
+  stroke-width: 1px;
+}
+
+.fretboarder-string {
   stroke: black;
   stroke-width: 1px;
+}
+
+.fretboarder-nut {
+  stroke: black;
+  stroke-width: 6px;
 }
