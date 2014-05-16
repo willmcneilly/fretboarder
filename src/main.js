@@ -5,7 +5,7 @@ var fretboarder = function(chordNotation, options, SVG) {
       // percentage larger height of fretboard is compared to width
   var HEIGHT_PERCENTAGE = 20,
       // The percentage of finger position compared to fretheight
-      FINGER_SIZE_PERCENTAGE = 80,
+      FINGER_SIZE_PERCENTAGE = 60,
       MARGIN_PERCENTAGE = 20,
       NUM_FRETS = 5,
       FONTSIZE_PERCENTAGE = 12;
@@ -163,19 +163,21 @@ var fretboarder = function(chordNotation, options, SVG) {
           xPosition,
           yPosition;
 
-      if(note === 'x' || note === 0) {
-
+      if(note === 'x' ) {
+        _drawOpenNotation('x', index);
+      }
+      else if(note === 0){
+        _drawOpenNotation('o', index);
       }
       else {
         relativeFingerPosition = note - _startingFret;
         xPosition = index * _widthBetweenStrings;
         yPosition = relativeFingerPosition * _fretHeight;
         _drawFingerPosition(xPosition, yPosition);
-
       }
-
     });
   };
+
 
   var _drawFingerPosition = function(x,y) {
     var fingerSize = _fretHeight/100 * FINGER_SIZE_PERCENTAGE;
@@ -210,6 +212,7 @@ var fretboarder = function(chordNotation, options, SVG) {
     if(!_isInOpenPosition()) {
       _canvas
         .text(_startingFret.toString())
+        .attr('class', 'fretboarder-fret-number')
         .dx(_margin/2)
         .dy(_margin)
         .font({
@@ -218,6 +221,20 @@ var fretboarder = function(chordNotation, options, SVG) {
           anchor: 'middle',
         });
     }
+  };
+
+  var _drawOpenNotation = function(notationContent, stringNumber) {
+    var xPostion = (stringNumber * _widthBetweenStrings) + _margin;
+    _canvas
+      .text(notationContent)
+      .attr('class', 'fretboarder-open-notation')
+      .dx(xPostion)
+      .dy(0)
+      .font({
+        family: 'Helvetica',
+        size: _fontSize,
+        anchor: 'middle',
+      });
   };
 
   var _initiateCanvas = function() {
