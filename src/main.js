@@ -11,7 +11,7 @@ var fretboarder = function(chordNotation, options, SVG) {
       FONTSIZE_PERCENTAGE = 12;
 
   var defaultOptions = {
-    width: 100,
+    width: 200,
   };
 
   var mergedOptions = null,
