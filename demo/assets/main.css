@@ -18,3 +18,11 @@
 /* === subsections === */
 
 /* === hacks / overrides === */
+
+
+html, button, input, select, textarea,
+.pure-g [class *= "pure-u"],
+.pure-g-r [class *= "pure-u"] {
+    font-family: "proxima-nova", Helvetica, "Times New Roman", serif;
+}
+</styl
